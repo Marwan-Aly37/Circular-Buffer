@@ -2,33 +2,49 @@
 #define CIRCULAR_BUFFER_H
 
 #include <stdio.h>
-#include <stdint.h>
+#include "config.h"
 
-#define CIRCULAR_BUFFER_SIZE 10   // Define the size of the circular buffer
-
-typedef struct Node
+#define DEFAULT_BUFFER_SIZE 10
+class CircularBuffer
 {
-    uint16_t data;
-    struct Node* next;
-    struct Node* prev;
-}node;
+    private:
+    
+    struct node
+    {
+        float data;
+        struct node* next;
+        struct node* prev;
+    };
 
-
-typedef struct CircularBuffer
-{
-    node buffer[CIRCULAR_BUFFER_SIZE];
+    int buffer_size;
     node* head;
     node* tail;
     node* current;
+    
+    
+    public:
+    
+    CircularBuffer();
+    ~CircularBuffer();
+    
+    void insert(float value);
+    void show() const;
+    void resize(int size);
+    
+    float latest() const;
+    float sum() const;
+    float average() const;
+    float difference() const;
+    
+    int get_size() const;
+    int copy(CircularBuffer* cb) const;
 
-}circ_buff;
+    void test();
+    
+    CircularBuffer(const CircularBuffer&) = delete;
+    CircularBuffer& operator=(const CircularBuffer&) = delete;
+};
 
-void initBuffer(circ_buff* cb);
-void insert(circ_buff* cb, uint16_t value);
-void show(circ_buff* cb);
-void latest(circ_buff* cb);
 
-uint32_t sum_buff(circ_buff* cb);
-float avg_buff(circ_buff* cb);
 
 #endif
