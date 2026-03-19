@@ -35,6 +35,7 @@ class CircularBuffer
     float sum() const;
     float average() const;
     float difference() const;
+    float find(int index)const;
     
     int get_size() const;
     int copy(CircularBuffer* cb) const;

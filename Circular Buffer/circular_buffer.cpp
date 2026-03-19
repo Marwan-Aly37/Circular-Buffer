@@ -3,7 +3,6 @@
 CircularBuffer::CircularBuffer()
 {
     buffer_size = DEFAULT_BUFFER_SIZE;
-
     this->head = new node;
     this->head->data = 0;
     this->current = this->head;
@@ -120,6 +119,38 @@ float CircularBuffer::difference() const
     return diff;
 }
 
+float CircularBuffer::find(int index) const
+{
+    if(index > buffer_size - 1 || index < 0)
+    {
+        LOG_WARN("Index is out of range!");
+        return -1.0;
+    }
+
+    node* finder;
+    
+    if(index > buffer_size/2)
+    {
+        int steps = buffer_size -1 -index;
+        finder = this->tail;
+        for(int i = 0; i < steps;i++)
+        {
+            finder = finder->prev;
+        }
+    }
+
+    else
+    {
+        finder = this->head;
+        for(int i = 0; i < index;i++)
+        {
+            finder = finder->next;
+        }
+    }
+
+    return finder->data;
+}
+
 int CircularBuffer::copy(CircularBuffer* cb) const
 {
     if(cb == nullptr)
@@ -231,7 +262,8 @@ void CircularBuffer::test()
     cb_test_2.copy(&cb_test);
     cb_test_2.show();
 
-
+    float y = cb_test.find(15);
+    LOG_DEBUG("Found: %.2f\n", y);
 }
 
 int main()
